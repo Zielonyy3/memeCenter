@@ -1,0 +1,29 @@
+.login-info {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.top-pad {
+    top: 56px;
+}
+
+.alert {
+    width: 100%;
+    border-radius: 0;
+}
+
+.fas.fa-heart,
+.fas.fa-comment {
+    cursor: pointer;
+    transition: .15s;
+}
+
+.fas.fa-heart:hover {
+    color: rgb(212, 13, 13);
+}
+
+
+.fas.fa-comment:hover {
+    color: rgb(13, 172, 212);
+}
