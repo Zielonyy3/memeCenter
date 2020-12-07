@@ -1,48 +1,59 @@
-<?php 
-class Users extends Controller{
-    protected function index(){
+<?php
+
+class Users extends Controller
+{
+    protected function index(): void
+    {
         $viewmodel = new UserModel();
-        $this->returnView($viewmodel->index(), true);
+        $this->renderView($viewmodel->index(), true);
     }
 
-    protected function login(){
+    protected function login(): void
+    {
         $viewmodel = new UserModel();
-        if(!(isset($_SESSION['is_logged_in']) && !$_SESSION['is_logged_in'])){
-            $this->returnView($viewmodel->login(), true);
-        }else{
-            $this->redirectView('alreadyLogged', true);
+        if (!(isset($_SESSION['is_logged_in']) && !$_SESSION['is_logged_in'])) {
+            $this->renderView($viewmodel->login(), true);
+        } else {
+            $this->redirectRender('alreadyLogged', true);
         }
     }
 
-    protected function register(){
+    protected function register(): void
+    {
         $viewmodel = new UserModel();
-        if(!(isset($_SESSION['is_logged_in']) && !$_SESSION['is_logged_in'])){
-            $this->returnView($viewmodel->register(), true);
+        if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in']) {
+            $this->action = 'alreadyLogged';
+            $this->renderView($viewmodel->register(), true);
         }else{
-            $this->redirectView('alreadyLogged', true);
+            $this->renderView($viewmodel->register(), true);
         }
     }
 
-    protected function verify(){
+    protected function verify(): void
+    {
         $viewmodel = new UserModel();
-        $this->returnView($viewmodel->verify(), true);
+        $this->renderView($viewmodel->verify(), true);
     }
 
-    protected function remindPassword(){
+    protected function remindPassword(): void
+    {
         $viewmodel = new UserModel();
-        $this->returnView($viewmodel->remindPassword(), true);
+        $this->renderView($viewmodel->remindPassword(), true);
     }
 
-    protected function show(){
+    protected function show(): void
+    {
         $viewmodel = new UserModel();
-        $this->returnView($viewmodel->show($this->request['id']), true);
+        $this->renderView($viewmodel->show($this->request['id']), true);
     }
 
-    protected function logout(){
+    protected function logout(): void
+    {
         unset($_SESSION['is_logged_in']);
         unset($_SESSION['user_data']);
         session_destroy();
-        header('Location: '.ROOT_PATH);
+        header('Location: ' . ROOT_PATH);
     }
 }
+
 ?>

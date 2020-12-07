@@ -1,13 +1,18 @@
-<?php 
-class UserModel extends Model{
-    public function index(){
+<?php
+
+class UserModel extends Model
+{
+    public function index(): array
+    {
         $this->query('SELECT * FROM users ORDER BY points DESC');
         $this->execute();
         $rows = $this->resultSetAll();
         return $rows;
     }
-    private function setUserSession($user){
-        if($user){
+
+    private function setUserSession(array $user): bool
+    {
+        if ($user) {
             $_SESSION['is_logged_in'] = true;
             $_SESSION['user_data'] = array(
                 "id" => $user['id'],
@@ -17,51 +22,52 @@ class UserModel extends Model{
                 'points' => $user['points'],
             );
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    public function login(){
+    public function login(): void
+    {
         $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-        if(isset($post['submit'])){
+        if (isset($post['submit'])) {
             $password = md5($post['password']);
 
             $this->query("SELECT * FROM users WHERE name=:name AND password=:password");
             $this->bind(':name', $post['name']);
             $this->bind(':password', $password);
             $user = $this->resultSetSingle();
-            if($this->setUserSession($user)){
+            if ($this->setUserSession($user)) {
                 Messages::setMsg('Logowanie udane!', 'success');
-                exit(header('Location: '.ROOT_PATH));
-            }else{
+                exit(header('Location: ' . ROOT_PATH));
+            } else {
                 Messages::setMsg('Logowanie nie powiodło się!', 'error');
             }
         }
-        return;
-
     }
-    private function isAvailableName($name, $mail){
+
+    private function isAvailableName(string $name,string $mail): bool
+    {
         $this->query("SELECT * FROM users WHERE name = :name OR mail = :mail");
         $this->bind(':name', $name);
         $this->bind(':mail', $mail);
         $this->execute();
         $user = $this->resultSetSingle();
-        print_r($user);
-        if(!isset($user['id'])){
+        if (!isset($user['id'])) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    private function sendVerifyMail($to_mail, $verify_code, $expirationDate){
+    private function sendVerifyMail(string $to_mail, string $verify_code, string $expirationDate): void
+    {
         $subject = "MEME CENTER - Kod Weryfikacyjny";
         $headers = "From: meme.center@yandex.com" . "\r\n";
         $headers .= 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
-        $headers .='Reply-To: user@example.com' . "\r\n";
-        $headers .='X-Mailer: PHP/' . phpversion();
+        $headers .= 'Reply-To: user@example.com' . "\r\n";
+        $headers .= 'X-Mailer: PHP/' . phpversion();
 
         $body = '<td>
                 <table width="100%" cellspacing="0" cellpadding="0">
@@ -79,12 +85,12 @@ class UserModel extends Model{
                                         <tr>
                                             <td>
                                                 <p style="color: #333333;">Otrzymałeś ten mail ponieważ zarejestrowałeś się na
-                                                    stronie meme center. Poniżej znajduje się twój kod weryfikacyjny ważny do <b>'.$expirationDate.'</b>.</p>
+                                                    stronie meme center. Poniżej znajduje się twój kod weryfikacyjny ważny do <b>' . $expirationDate . '</b>.</p>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <div style="display: inline-block;background-color: #fbcc20;padding: .6rem 1rem;font-size: 1.2rem;">'.$verify_code.'</div>
+                                                <div style="display: inline-block;background-color: #fbcc20;padding: .6rem 1rem;font-size: 1.2rem;">' . $verify_code . '</div>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -95,27 +101,28 @@ class UserModel extends Model{
                 </table>
             </td>';
 
-        if(mail($to_mail, $subject, $body, $headers)){
+        if (mail($to_mail, $subject, $body, $headers)) {
             echo 'Mail wysłany';
-        }else{
+        } else {
             echo 'Mail nie został wysłany...';
         }
     }
 
-    public function register(){
+    public function register(): void
+    {
         $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-        if(isset($post['submit'])){
+        if (isset($post['submit'])) {
             $password = md5($post['password']);
-            if($this->isAvailableName($post['name'], $post['mail'])){
+            if ($this->isAvailableName($post['name'], $post['mail'])) {
                 $this->query("INSERT INTO users(name, mail, password) VALUES(:name, :mail, :password)");
                 $this->bind(':name', $post['name']);
                 $this->bind(':mail', $post['mail']);
                 $this->bind(':password', $password);
                 $this->execute();
 
-                if($this->lastInsertId()){
-                    $_SESSION["created_user_id"] =  $this->lastInsertId();
+                if ($this->lastInsertId()) {
+                    $_SESSION["created_user_id"] = $this->lastInsertId();
 
                     $this->query("SELECT * FROM users WHERE id=:user_id");
                     $this->bind(':user_id', $this->lastInsertId());
@@ -123,32 +130,32 @@ class UserModel extends Model{
 
                     $this->setUserSession($user);
 
-                    exit(header('Location: '.ROOT_PATH.'users/verify'));
+                    exit(header('Location: ' . ROOT_PATH . 'users/verify'));
                 }
-            }else{
+            } else {
                 Messages::setMsg('Takie konto już istnieje!', 'error');
             }
         }
-        return;
     }
 
-    private function generateAndSendCode($to_mail){
+    private function generateAndSendCode(string $to_mail): void
+    {
         $random_code = substr(md5(uniqid(rand(), true)), 7, 7);
 
         $currentDateTime = new DateTime('now');
         $currentDateTime->add(new DateInterval('PT30M'));
         $expirationDate = date_format($currentDateTime, 'Y-m-d H:i:s');
-        
+
         $this->query('SELECT * FROM  verification_codes WHERE user_id = :user_id');
         $this->bind(':user_id', $_SESSION['user_data']['id']);
         $this->execute();
 
-        if($this->resultSetSingle()){
+        if ($this->resultSetSingle()) {
             $this->query('UPDATE verification_codes SET code = :code, expiration_date = :expiration_date');
             $this->bind(':code', $random_code);
             $this->bind(':expiration_date', $expirationDate);
             $this->execute();
-        }else{
+        } else {
             $this->query('INSERT INTO verification_codes(user_id, code, expiration_date) VALUES(:user_id, :code, :expiration_date)');
             $this->bind(':user_id', $_SESSION['user_data']['id']);
             $this->bind(':code', $random_code);
@@ -158,92 +165,97 @@ class UserModel extends Model{
         $this->sendVerifyMail($to_mail, $random_code, $expirationDate);
     }
 
-    public function verify(){
+    public function verify(): void
+    {
         $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-        if(isset($post['submitVerifyCode'])){
+        if (isset($post['submitVerifyCode'])) {
             $this->query('SELECT * FROM verification_codes WHERE user_id = :user_id');
             $this->bind(':user_id', $_SESSION['user_data']['id']);
             $this->execute();
             $code = $this->resultSetSingle();
 
-            if (strtotime((new DateTime())->format("Y-m-d H:i:s")) > strtotime($code['expiration_date'])){
+            if (strtotime((new DateTime())->format("Y-m-d H:i:s")) > strtotime($code['expiration_date'])) {
                 Messages::setMsg('Ten kod już wygasł!', 'error');
-            }else{
-                if($post['code'] == $code['code']){
+            } else {
+                if ($post['code'] == $code['code']) {
                     $this->query('UPDATE users SET is_verified = true WHERE id = :user_id');
                     $this->bind(':user_id', $_SESSION['user_data']['id']);
                     $this->execute();
-                    
+
                     $_SESSION['user_data']['is_verified'] = true;
 
                     Messages::setMsg('Twoje konto zostało zweryfikowane', 'success');
-                    exit(header('Location: '.ROOT_PATH));
-                }else{
+                    exit(header('Location: ' . ROOT_PATH));
+                } else {
                     Messages::setMsg('Kod nieprawidłowy! Spróbuj ponownie lub wyślij wiadomość jeszcze raz', 'error');
-                    exit(header('Location: '.ROOT_PATH.'users/verify'));
+                    exit(header('Location: ' . ROOT_PATH . 'users/verify'));
                 }
             }
-        }else{
+        } else {
             $this->generateAndSendCode($_SESSION['user_data']['mail']);
         }
-        return;
     }
 
-    public function remindPassword(){
+    public function remindPassword(): string
+    {
         return 'Ups! Jeszcze tutaj nic nie ma.';
     }
 
-    private function changeAvatar(){
+    private function changeAvatar(): void
+    {
         $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-        if(isset($post['changeAvatar']) && isset($_SESSION['is_logged_in'])){
+        if (isset($post['changeAvatar']) && isset($_SESSION['is_logged_in'])) {
             $avatar = $_FILES['avatar']['name'];
-            $uploadFile = AVATARS_REAL_PATH.basename($avatar);
+            $uploadFile = AVATARS_REAL_PATH . basename($avatar);
 
-            if(move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadFile)){
-                    $this->query("UPDATE users SET avatar = :avatar WHERE id = :user_id");
-                    $this->bind(':avatar', $avatar);
-                    $this->bind(':user_id', $_SESSION['user_data']['id']);
-                    $this->execute();
+            if (move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadFile)) {
+                $this->query("UPDATE users SET avatar = :avatar WHERE id = :user_id");
+                $this->bind(':avatar', $avatar);
+                $this->bind(':user_id', $_SESSION['user_data']['id']);
+                $this->execute();
 
-                    Messages::setMsg('Avatar został zmieniony', 'success');
-                    exit(header('Location: '.ROOT_PATH.'/users/show/'.$_SESSION['user_data']['name']));
-            }else{
+                Messages::setMsg('Avatar został zmieniony', 'success');
+                exit(header('Location: ' . ROOT_PATH . '/users/show/' . $_SESSION['user_data']['name']));
+            } else {
                 Messages::setMsg('Nie udało się wysłać pliku! Spróbuj ponownie później', 'error');
             }
         }
     }
 
-    private function changeName(){
+    private function changeName(): void
+    {
         $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-        if(isset($post['changeName']) && isset($_SESSION['is_logged_in'])){
+        if (isset($post['changeName']) && isset($_SESSION['is_logged_in'])) {
             $this->query("UPDATE users SET name = :name WHERE id = :user_id");
             $this->bind(':name', $post['name']);
             $this->bind(':user_id', $_SESSION['user_data']['id']);
             $this->execute();
 
             Messages::setMsg('Nazwa została zmieniony', 'success');
-            exit(header('Location: '.ROOT_PATH.'/users/show/'.$post['name']));
+            exit(header('Location: ' . ROOT_PATH . '/users/show/' . $post['name']));
         }
     }
 
-    
-    private function changeMail(){
+
+    private function changeMail(): void
+    {
         $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-        if(isset($post['changeMail']) && isset($_SESSION['is_logged_in'])){
+        if (isset($post['changeMail']) && isset($_SESSION['is_logged_in'])) {
             $this->query("UPDATE users SET mail = :mail WHERE id = :user_id");
             $this->bind(':name', $post['mail']);
             $this->bind(':user_id', $_SESSION['user_data']['id']);
             $this->execute();
 
             Messages::setMsg('Mail został zmieniony', 'success');
-            exit(header('Location: '.ROOT_PATH.'/users/show/'.$_SESSION['user_data']['name']));
+            exit(header('Location: ' . ROOT_PATH . '/users/show/' . $_SESSION['user_data']['name']));
         }
     }
 
-    public function show($userName){
+    public function show(string $userName): array
+    {
         $this->changeAvatar();
         $this->changeName();
         $this->changeMail();
@@ -267,13 +279,14 @@ class UserModel extends Model{
         $this->bind(':userId2', $user['id']);
         $this->execute();
         $activities = $this->resultSetAll();
-        $result = array('user' => $user, 'memes' => $memes, 'activities' => $activities);
+        $result = ['user' => $user, 'memes' => $memes, 'activities' => $activities];
 
-        foreach($result['activities'] as &$activity){
+        foreach ($result['activities'] as &$activity) {
             $activity['created_at'] = $this->time_elapsed_string($activity['created_at']);
         }
         return $result;
     }
-    
+
 }
+
 ?>

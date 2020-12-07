@@ -1,8 +1,12 @@
-<?php 
-class Home extends Controller{
-    protected function Index(){
+<?php
+
+class Home extends Controller
+{
+    protected function Index()
+    {
         $viewmodel = new HomeModel();
-        $this->returnview($viewmodel->Index(), true);
+        $this->renderView($viewmodel->Index(), true);
     }
 }
+
 ?>

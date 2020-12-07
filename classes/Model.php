@@ -1,61 +1,72 @@
-<?php 
-abstract class Model{
+<?php
+
+abstract class Model
+{
     protected $dbh;
     protected $stmt;
 
-    public function __construct(){
-        $this->dbh = new PDO("mysql:host=".DB_HOST.';dbname='.DB_NAME, DB_USER, DB_PASS);
+    public function __construct()
+    {
+        $this->dbh = new PDO("mysql:host=" . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASS);
     }
 
-    public function query($query){
+    public function query(string $query): void
+    {
         $this->stmt = $this->dbh->prepare($query);
     }
 
-    public function bind($param, $value, $type = null){
-        if(is_null($type)){
-            switch(true){
+    public function bind($param, $value, $type = null): void
+    {
+        if (is_null($type)) {
+            switch (true) {
                 case is_int($value):
                     $type = PDO::PARAM_INT;
-                break;
+                    break;
                 case is_bool($value):
                     $type = PDO::PARAM_BOOL;
-                break;
+                    break;
                 case is_null($value):
-                    $tpye= PDO::PARAM_NULL;
-                break;
+                    $type = PDO::PARAM_NULL;
+                    break;
                 default:
-                    $type = PDO::PARAM_STR; 
+                    $type = PDO::PARAM_STR;
             }
         }
         $this->stmt->bindValue($param, $value, $type);
     }
 
-    public function execute(){
+    public function execute(): void
+    {
         $this->stmt->execute();
     }
 
-    public function resultSetAll(){
+    public function resultSetAll(): array
+    {
         $this->execute();
         return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function resultSetSingle(){
+    public function resultSetSingle(): array
+    {
         $this->execute();
         return $this->stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function lastInsertId(){
+    public function lastInsertId(): string
+    {
+        ;
         return $this->dbh->lastInsertId();
     }
 
-    protected function time_elapsed_string($datetime, $full = false) {
+    protected function time_elapsed_string(string $datetime, bool $full = false): string
+    {
         $now = new DateTime;
         $ago = new DateTime($datetime);
         $diff = $now->diff($ago);
         $diff->w = floor($diff->d / 7);
         $diff->d -= $diff->w * 7;
-    
-        $string = array(
+
+        $textEnd = [
             'y' => 'lat',
             'm' => 'miesięcy',
             'w' => 'tygodni',
@@ -63,17 +74,20 @@ abstract class Model{
             'h' => 'godzin',
             'i' => 'minut',
             's' => 'sekund',
-        );
-        foreach ($string as $key => &$val) {
-            if ($diff->$key &&$key!=='s') {
+        ];
+        foreach ($textEnd as $key => &$val) {
+            if ($diff->$key && $key !== 's') {
                 $val = $diff->$key . ' ' . $val;
             } else {
-                unset($string[$key]);
+                unset($textEnd[$key]);
             }
         }
-    
-        if (!$full) $string = array_slice($string, 0, 1);
-        return $string ? implode(', ', $string) . ' temu' : 'teraz';
+
+        if (!$full) {
+            $textEnd = array_slice($textEnd, 0, 1);
+        }
+        return $textEnd ? implode(', ', $textEnd) . ' temu' : 'teraz';
     }
 }
+
 ?>

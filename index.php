@@ -1,26 +1,23 @@
-<?php 
+<?php
 session_start();
 
 require('config.php');
 
-require('classes/Root.php');
-require('classes/Controller.php');
-require('classes/Model.php');
-require('classes/Messages.php');
+foreach (glob("classes/*.php") as $filename) {
+    require  $filename;
+}
 
-require('controllers/home.php');
-require('controllers/users.php');
-require('controllers/memes.php');
+foreach (glob("controllers/*.php") as $filename) {
+    require  $filename;
+}
 
-require('models/home.php');
-require('models/user.php');
-require('models/meme.php');
-
-
+foreach (glob("models/*.php") as $filename) {
+    require  $filename;
+}
 
 $root = new Root($_GET);
 $controller = $root->createController();
-if($controller){
+if ($controller) {
     $controller->executeAction();
 }
 

@@ -1,32 +1,31 @@
-<?php 
-abstract class Controller{
+<?php
+
+abstract class Controller
+{
     protected $request;
     protected $action;
 
-    public function __construct($request, $action){
+    public function __construct(array $request, string $action)
+    {
         $this->action = $action;
-        $this->request= $request;
+        $this->request = $request;
     }
 
-    public function executeAction(){
+    public function executeAction()
+    {
         return $this->{$this->action}();
     }
 
-    protected function returnView($viewmodel, $fullview){
-        $view = 'views/'.get_class($this).'/'.$this->action.'.php';
-        if($fullview){
+    protected function renderView($viewmodel, bool $fullview): void
+    {
+        $className = get_class($this);
+        $view = "views/$className/$this->action.php";
+        if ($fullview) {
             require('views/main.php');
-        }else{
-            require($view);
-        }
-    }
-    protected function redirectView($redirectedAction, $fullview){
-        $view = 'views/'.get_class($this).'/'.$redirectedAction.'.php';
-        if($fullview){
-            require('views/main.php');
-        }else{
+        } else {
             require($view);
         }
     }
 }
+
 ?>

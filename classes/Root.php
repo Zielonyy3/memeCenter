@@ -1,40 +1,46 @@
-<?php 
-class Root{
+<?php
+
+class Root
+{
     private $controller;
     private $action;
     private $request;
-    public function __construct($request){
+
+    public function __construct(array $request)
+    {
         $this->request = $request;
-        if($this->request['controller'] == ""){
-            $this->controller='home';
-        }else{
+        if ($this->request['controller'] == "") {
+            $this->controller = 'home';
+        } else {
             $this->controller = $this->request['controller'];
         }
-        if($this->request['action'] == ""){
+        if ($this->request['action'] == "") {
             $this->action = 'index';
-        }else{
+        } else {
             $this->action = $this->request['action'];
         }
     }
 
-    public function createController(){
-        if(class_exists($this->controller)){
+    public function createController(): ?Controller
+    {
+        if (class_exists($this->controller)) {
             $parents = class_parents($this->controller);
-            if(in_array("Controller", $parents)){
-                if(method_exists($this->controller, $this->action)){
+            if (in_array("Controller", $parents)) {
+                if (method_exists($this->controller, $this->action)) {
                     return new $this->controller($this->request, $this->action);
-                }else{
+                } else {
                     echo '<h1>Method does not exist</h1>';
-                    return;
+                    return null;
                 }
-            }else{
+            } else {
                 echo '<h1>Base controller is not found';
-                return;
+                return null;
             }
-        }else{
+        } else {
             echo '<h1>Controller class does not exist</h1>';
-            return;
+            return null;
         }
     }
 }
+
 ?>
