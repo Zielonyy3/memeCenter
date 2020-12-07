@@ -2,30 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="62d67229-4aec-4d52-8429-d81cca015683" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/classes/Controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/Controller.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/Messages.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/Messages.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/classes/Model.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/Model.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/Root.php" beforeDir="false" afterPath="$PROJECT_DIR$/classes/Root.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/home.php" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/home.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/memes.php" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/memes.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/users.php" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/users.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/home.php" beforeDir="false" afterPath="$PROJECT_DIR$/models/home.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/meme.php" beforeDir="false" afterPath="$PROJECT_DIR$/models/meme.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/user.php" beforeDir="false" afterPath="$PROJECT_DIR$/models/user.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/header.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/home/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/home/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/main.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/main.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/memes/add.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/memes/add.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/memes/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/memes/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/memes/show.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/memes/show.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/users/alreadyLogged.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/users/alreadyLogged.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/users/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/users/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/users/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/users/login.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/users/register.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/users/register.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/users/remindPassword.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/users/remindPassword.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/users/show.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/users/show.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/users/verify.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/users/verify.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,9 +28,6 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="ProblemsViewState">
-    <option name="selectedIndex" value="1" />
   </component>
   <component name="ProjectId" id="1lLLqh7fNihym7wIdKr9rFWCy7i" />
   <component name="ProjectViewState">
@@ -62,7 +50,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1607371618764</updated>
-      <workItem from="1607371620088" duration="3558000" />
+      <workItem from="1607371620088" duration="8657000" />
     </task>
     <servers />
   </component>

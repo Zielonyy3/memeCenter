@@ -8,7 +8,7 @@
 <hr>
 <?php
 $i = 0;
-foreach ($viewmodel as $row):
+foreach ($viewdata as $row):
     ?>
     <?php if ($i % 2 == 0): ?>
     <div class="d-flex align-items-center bd-highlight justify-content-center">

@@ -2,10 +2,10 @@
 
 class Home extends Controller
 {
-    protected function Index()
+    protected function Index(): void
     {
         $viewmodel = new HomeModel();
-        $this->renderView($viewmodel->Index(), true);
+        $this->viewdata = $viewmodel->Index();
     }
 }
 

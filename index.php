@@ -19,6 +19,7 @@ $root = new Root($_GET);
 $controller = $root->createController();
 if ($controller) {
     $controller->executeAction();
+    echo $controller->render( true);
 }
 
 ?>

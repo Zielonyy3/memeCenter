@@ -2,7 +2,7 @@
 
 class UserModel extends Model
 {
-    public function index(): array
+    public function index(): ?array
     {
         $this->query('SELECT * FROM users ORDER BY points DESC');
         $this->execute();
@@ -10,7 +10,7 @@ class UserModel extends Model
         return $rows;
     }
 
-    private function setUserSession(array $user): bool
+    private function setUserSession($user): bool #przyjmuje bool lub array, nie jaki typ ustawić
     {
         if ($user) {
             $_SESSION['is_logged_in'] = true;

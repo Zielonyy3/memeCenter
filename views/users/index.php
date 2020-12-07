@@ -10,7 +10,7 @@
     </tr>
     </thead>
     <tbody>
-    <?php foreach ($viewmodel as $row): ?>
+    <?php foreach ($viewdata as $row): ?>
         <?php if ((isset($_SESSION['user_data']['id'])) && $_SESSION['user_data']['id'] == $row['id']): ?>
             <tr class="table-success">
         <?php else: ?>

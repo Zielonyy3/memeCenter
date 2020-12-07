@@ -9,7 +9,7 @@
     </h2>
 
     <div class="d-flex align-items-center bd-highlight justify-content-between p-5" syle="max-height: 200px;">
-        <?php foreach ($viewmodel as $row): ?>
+        <?php foreach ($viewdata as $row): ?>
             <div class="card flex-fill mx-2" style="width: 18rem; max-width: 300px;">
                 <div class="p-1 border-bottom">
                     <p class="card-text" style="font-size: .9rem"><?= $row['added_at'] ?></p>

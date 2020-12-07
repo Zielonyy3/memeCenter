@@ -9,7 +9,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="<?= ROOT_PATH ?>users/show/<?= $viewmodel['user']['name'] ?>"
+                <form method="POST" action="<?= ROOT_PATH ?>users/show/<?= $viewdata['user']['name'] ?>"
                       enctype='multipart/form-data'>
                     <div class="form-group">
                         <label for="avatar">Wybierz zdjęcie</label>
@@ -37,7 +37,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="<?= ROOT_PATH ?>users/show/<?= $viewmodel['user']['name'] ?>">
+                <form method="POST" action="<?= ROOT_PATH ?>users/show/<?= $viewdata['user']['name'] ?>">
                     <div class="form-group">
                         <label for="avatar">Nowa nazwa</label>
                         <input type="text" class="form-control-file" id="name" name="name">
@@ -63,7 +63,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="<?= ROOT_PATH ?>users/show/<?= $viewmodel['user']['name'] ?>">
+                <form method="POST" action="<?= ROOT_PATH ?>users/show/<?= $viewdata['user']['name'] ?>">
                     <div class="form-group">
                         <label for="avatar">Nowy mail</label>
                         <input type="email" class="form-control-file" id="mail" name="mail">
@@ -84,21 +84,21 @@
         <div class="row">
             <div class="w-100 mr-4 p-2 d-flex justify-content-between align-items-end border-bottom">
                 <div class="d-flex w-50 align-items-end">
-                    <img src="<?= AVATARS_PATH; ?><?= $viewmodel['user']['avatar'] ?>" alt="avatar"
+                    <img src="<?= AVATARS_PATH; ?><?= $viewdata['user']['avatar'] ?>" alt="avatar"
                          class="rounded-circle w-auto mr-4" style="height: 100px; !important">
                     <div class="row">
-                        <h5><?= $viewmodel['user']['name'] ?><h5>
+                        <h5><?= $viewdata['user']['name'] ?><h5>
                     </div>
                 </div>
 
                 <div class="d-flex flex-column justify-content-between">
-                    <div class="row">Punktów:<strong><?= ' ' . $viewmodel['user']['points'] ?></strong></div>
-                    <div class="row">Data dołączenia: <strong><?= $viewmodel['user']['join_date'] ?></strong></div>
-                    <div class="row">Mail: <strong><?= $viewmodel['user']['mail'] ?></strong></div>
+                    <div class="row">Punktów:<strong><?= ' ' . $viewdata['user']['points'] ?></strong></div>
+                    <div class="row">Data dołączenia: <strong><?= $viewdata['user']['join_date'] ?></strong></div>
+                    <div class="row">Mail: <strong><?= $viewdata['user']['mail'] ?></strong></div>
                 </div>
             </div>
         </div>
-        <?php if (isset($_SESSION['is_logged_in']) && ($_SESSION['user_data']['id'] == $viewmodel['user']['id'])): ?>
+        <?php if (isset($_SESSION['is_logged_in']) && ($_SESSION['user_data']['id'] == $viewdata['user']['id'])): ?>
             <div class="row">
 
                 <div class="col-sm">
@@ -133,7 +133,7 @@
             <thead>
             </thead>
             <tbody>
-            <?php foreach ($viewmodel['activities'] as $activity): ?>
+            <?php foreach ($viewdata['activities'] as $activity): ?>
                 <tr>
                     <th scope="row"><?= $activity['created_at'] ?></th>
                     <td><?= $activity['name'] . ' ' . $activity['action'] ?><a
@@ -146,18 +146,18 @@
 </div>
 
 <hr>
-<?php if (isset($_SESSION['is_logged_in']) && ($_SESSION['user_data']['id'] == $viewmodel['user']['id'])): ?>
+<?php if (isset($_SESSION['is_logged_in']) && ($_SESSION['user_data']['id'] == $viewdata['user']['id'])): ?>
     <h4 class="text-center">
         <mark>Twoje ostatnio dodane memy</mark>
     </h4>
 <?php else: ?>
     <h4 class="text-center">
-        <mark>Ostatnio dodane memy <?= $viewmodel['user']['name'] ?></mark>
+        <mark>Ostatnio dodane memy <?= $viewdata['user']['name'] ?></mark>
     </h4>
 <?php endif; ?>
 <?php
 $i = 0;
-foreach ($viewmodel['memes'] as $meme):
+foreach ($viewdata['memes'] as $meme):
     ?>
     <?php if ($i % 2 == 0): ?>
     <div class="d-flex align-items-center bd-highlight justify-content-center">

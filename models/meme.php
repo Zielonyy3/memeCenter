@@ -6,7 +6,6 @@ class MemeModel extends Model
     {
         $this->query('SELECT U.name as author_name, M.id as id, user_id, title, path, added_at FROM `memes` M
         JOIN users U ON U.id = M.user_id ORDER BY added_at DESC');
-        $this->execute();
         $rows = $this->resultSetAll();
         return $rows;
     }

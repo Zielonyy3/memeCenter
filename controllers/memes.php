@@ -2,22 +2,22 @@
 
 class Memes extends Controller
 {
-    protected function index()
+    protected function index(): void
     {
         $viewmodel = new MemeModel();
-        $this->renderView($viewmodel->index(), true);
+        $this->viewdata = $viewmodel->index();
     }
 
     protected function add()
     {
         $viewmodel = new MemeModel();
-        $this->renderView($viewmodel->add(), true);
+        $this->viewdata = $viewmodel->add();
     }
 
     protected function show()
     {
         $viewmodel = new MemeModel();
-        $this->renderView($viewmodel->show($this->request['id']), true);
+        $this->viewdata =  $viewmodel->show($this->request['id']);
     }
 }
 

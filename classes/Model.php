@@ -40,13 +40,13 @@ abstract class Model
         $this->stmt->execute();
     }
 
-    public function resultSetAll(): array
+    public function resultSetAll(): ?array
     {
         $this->execute();
         return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function resultSetSingle(): array
+    public function resultSetSingle() #nie mogę ustawić mixed bo jest błąd? a właśnie taki typ zwraca fetch
     {
         $this->execute();
         return $this->stmt->fetch(PDO::FETCH_ASSOC);

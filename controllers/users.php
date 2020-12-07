@@ -5,16 +5,15 @@ class Users extends Controller
     protected function index(): void
     {
         $viewmodel = new UserModel();
-        $this->renderView($viewmodel->index(), true);
+        $this->viewdata = $viewmodel->index();
     }
 
     protected function login(): void
     {
         $viewmodel = new UserModel();
-        if (!(isset($_SESSION['is_logged_in']) && !$_SESSION['is_logged_in'])) {
-            $this->renderView($viewmodel->login(), true);
-        } else {
-            $this->redirectRender('alreadyLogged', true);
+        $viewmodel->login();
+        if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in']) {
+            $this->action = 'alreadyLogged';
         }
     }
 
@@ -23,28 +22,27 @@ class Users extends Controller
         $viewmodel = new UserModel();
         if (isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in']) {
             $this->action = 'alreadyLogged';
-            $this->renderView($viewmodel->register(), true);
         }else{
-            $this->renderView($viewmodel->register(), true);
+            $viewmodel->register();
         }
     }
 
     protected function verify(): void
     {
         $viewmodel = new UserModel();
-        $this->renderView($viewmodel->verify(), true);
+        $this->viewdata = $viewmodel->verify();
     }
 
-    protected function remindPassword(): void
+    protected function remindPassword():void
     {
         $viewmodel = new UserModel();
-        $this->renderView($viewmodel->remindPassword(), true);
+        $this->viewdata =  $viewmodel->remindPassword();
     }
 
     protected function show(): void
     {
         $viewmodel = new UserModel();
-        $this->renderView($viewmodel->show($this->request['id']), true);
+        $this->viewdata = $viewmodel->show($this->request['id']);
     }
 
     protected function logout(): void

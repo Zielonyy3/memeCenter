@@ -1,26 +1,26 @@
 <div class="row card-footer border d-flex justify-content-between align-items-baseline">
     <a href="<?= ROOT_PATH ?>memes" class="btn btn-primary px-4">Wróć</a>
-    <h4><?= $viewmodel['meme']['title'] ?></h4>
-    <p class="p-0 m-0"><?= $viewmodel['meme']['added_at'] ?></hp>
+    <h4><?= $viewdata['meme']['title'] ?></h4>
+    <p class="p-0 m-0"><?= $viewdata['meme']['added_at'] ?></hp>
 
 </div>
 <div class="row">
     <div class="col-md-8">
         <div class="card-body">
-            <img class="card-img-top" src="<?= MEMES_ROOT_PATH . $viewmodel['meme']['path'] ?>" alt="Card image cap"
+            <img class="card-img-top" src="<?= MEMES_ROOT_PATH . $viewdata['meme']['path'] ?>" alt="Card image cap"
                  style="max-height: 80vh;width: auto; max-width: 100%;">
         </div>
     </div>
     <div class="col-md-4 pt-4">
         <div class=" p-2 d-flex justify-content-between align-items-start border-bottom">
-            <a href="<?= ROOT_PATH ?>users/show/<?= $viewmodel['meme']['author_name'] ?>">
-                <img src="<?= AVATARS_PATH; ?><?= $viewmodel['meme']['avatar'] ?>" alt="avatar"
+            <a href="<?= ROOT_PATH ?>users/show/<?= $viewdata['meme']['author_name'] ?>">
+                <img src="<?= AVATARS_PATH; ?><?= $viewdata['meme']['avatar'] ?>" alt="avatar"
                      class="rounded-circle w-auto" style="height: 100px; !important">
             </a>
             <div class="d-flex flex-column justify-content-between">
-                <p><a href="<?= ROOT_PATH ?>users/show/<?= $viewmodel['meme']['author_name'] ?>"
-                      style="color: black;"><?= $viewmodel['meme']['author_name'] ?></a></p>
-                <p><strong>Points: <?= $viewmodel['meme']['points'] ?></strong></p>
+                <p><a href="<?= ROOT_PATH ?>users/show/<?= $viewdata['meme']['author_name'] ?>"
+                      style="color: black;"><?= $viewdata['meme']['author_name'] ?></a></p>
+                <p><strong>Points: <?= $viewdata['meme']['points'] ?></strong></p>
             </div>
         </div>
         <p class="p-3 border-bottom">
@@ -28,12 +28,12 @@
             consequatur qui ducimus aperiam, sit dignissimos quam, nesciunt necessitatibus temporibus ea voluptates amet
             minus eius.
         </p>
-        <?php if (isset($_SESSION['is_logged_in']) && ($viewmodel['meme']['author_id'] == $_SESSION['user_data']['id'])): ?>
+        <?php if (isset($_SESSION['is_logged_in']) && ($viewdata['meme']['author_id'] == $_SESSION['user_data']['id'])): ?>
             <button class="btn btn-danger px-4">Usuń mema</button>
             <hr>
         <?php endif; ?>
         <div>
-            <form method="POST" action="<?= ROOT_PATH ?>memes/show/<?= $viewmodel['meme']['id'] ?>">
+            <form method="POST" action="<?= ROOT_PATH ?>memes/show/<?= $viewdata['meme']['id'] ?>">
                 <div class="form-group">
                     <label for="comment"><h4>Dodaj komentarz</h4></label>
                     <textarea class="form-control" id="comment" rows="5" name="body"
@@ -50,9 +50,9 @@
 </div>
 <div class="row mt-4">
 
-    <?php if (count($viewmodel['comments']) > 0): ?>
+    <?php if (count($viewdata['comments']) > 0): ?>
         <ul class="list-unstyled w-100">
-            <?php foreach ($viewmodel['comments'] as $comment): ?>
+            <?php foreach ($viewdata['comments'] as $comment): ?>
                 <li class="media border card-footer py-2 px-3 w-100 my-3">
                     <a href="<?= ROOT_PATH ?>users/show/<?= $comment['name'] ?>">
                         <img src="<?= AVATARS_PATH; ?><?= $comment['avatar'] ?>" class="mr-3" alt="avatar"
